@@ -1,9 +1,14 @@
 import axios from "axios";
 import React from "react";
-import Col from "react-bootstrap/Col";
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
-import Button from "react-bootstrap/esm/Button";
+import {
+  Col,
+  Row,
+  Form,
+  InputGroup,
+  Button,
+  Card,
+  Container,
+} from "react-bootstrap";
 
 const RegisterForm = () => {
   const [name, setName] = React.useState("");
@@ -12,6 +17,7 @@ const RegisterForm = () => {
   const [password, setPassword] = React.useState("");
   const [file, setFile] = React.useState("");
   const [formError, setFormError] = React.useState({});
+  const [showPassword,settShowPassword] = React.useState(false)
 
   let formErr = {};
 
@@ -38,14 +44,10 @@ const RegisterForm = () => {
     if (email.trim().length === 0 || !verifyEmail(email)) {
       formErr.email = "Email address is required";
     }
-    if (mobile.toString().trim().length === 0 || !verifyNumber(mobile)) {
-      formErr.mobile = "Mobile Number is required";
-    } else if (mobile.trim().length !== 10) {
-      formErr.password = "Mobile Number is required 10 character";
-    }
-    if (password.trim().length === 0) {
-      formErr.password = "Password is required";
-    } else if (password.trim().length < 8 || password.trim().length > 128) {
+    if (mobile.toString().trim().length !== 10 || !verifyNumber(mobile)) {
+      formErr.mobile = "Mobile Number is required 10 character";
+    } 
+    if (password.trim().length < 8 || password.trim().length > 128) {
       formErr.password = "Password is required between 8 to 128 character";
     }
   };
@@ -84,114 +86,112 @@ const RegisterForm = () => {
     setPassword("");
     setFile("");
     setFormError({});
+    settShowPassword(false)
   };
-  console.log();
   return (
-    <Form onSubmit={handleFormSubmit}>
-      <div>
-        <Form.Group as={Row} className="mb-1" controlId="name">
-          <Form.Label column sm="4">
-            User Name
-          </Form.Label>
-          <Col sm="8">
-            <Form.Control
-              type="text"
-              placeholder="Name"
-              value={name}
-              onChange={(e) => {
-                setName(e.target.value);
-                delete formError.name;
-              }}
-            />
-          </Col>
-          {Object.keys(formError).length > 0 && formError.name && (
-            <p style={{ color: "red" }}>{formError.name}</p>
-          )}
-        </Form.Group>
-      </div>
-      <div>
-        <Form.Group as={Row} className="mb-1" controlId="email">
-          <Form.Label column sm="4">
-            Email
-          </Form.Label>
-          <Col sm="8">
-            <Form.Control
-              type="text"
-              placeholder="Email Address"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-                delete formError.email;
-              }}
-            />
-          </Col>
-          {Object.keys(formError).length > 0 && formError.email && (
-            <p style={{ color: "red" }}>{formError.email}</p>
-          )}
-        </Form.Group>
-      </div>
-      <div>
-        <Form.Group as={Row} className="mb-1" controlId="mobile">
-          <Form.Label column sm="4">
-            Mobile
-          </Form.Label>
-          <Col sm="8">
-            <Form.Control
-              type="number"
-              placeholder="Mobile Number"
-              value={mobile}
-              onChange={(e) => {
-                setMobile(e.target.value);
-                delete formError.mobile;
-              }}
-            />
-          </Col>
-
-          {Object.keys(formError).length > 0 && formError.mobile && (
-            <p style={{ color: "red" }}>{formError.mobile}</p>
-          )}
-        </Form.Group>
-      </div>
-      <div>
-        <Form.Group as={Row} className="mb-1" controlId="password">
-          <Form.Label column sm="4">
-            Password
-          </Form.Label>
-          <Col sm="8">
-            <Form.Control
-              type="text"
-              placeholder="password"
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-                delete formError.password;
-              }}
-            />
-          </Col>
-          {Object.keys(formError).length > 0 && formError.password && (
-            <p style={{ color: "red" }}>{formError.password}</p>
-          )}
-        </Form.Group>
-      </div>
-      <div>
-        <Form.Group as={Row} controlId="formFile" className="mb-1">
-          <Form.Label column sm="4">
-            Profile Picture
-          </Form.Label>
-          <Col sm="8">
-            <Form.Control
-              type="file"
-              onChange={(e) => setFile(e.target.files[0])}
-            />
-          </Col>
-        </Form.Group>
-      </div>
-      <div>
-        <Button type="submit" variant="success">
-          submit
-        </Button>
-      </div>
-    </Form>
+    <Container fluid>
+      <Card>
+        <Card.Title className="mb-3 ">User Register</Card.Title>
+        <Form onSubmit={handleFormSubmit}>
+          <Row>
+            <Col xs={12} md={6} lg={6}>
+              <Form.Group className="mb-2 text-start" controlId="name">
+                <Form.Label>User Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Name"
+                  value={name}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                    delete formError.name;
+                  }}
+                />
+                {Object.keys(formError).length > 0 && formError.name && (
+                  <small style={{ color: "red" }}>{formError.name}</small>
+                )}
+              </Form.Group>
+            </Col>
+            <Col xs={12} md={6} lg={6}>
+              <Form.Group className="mb-2 text-start" controlId="email">
+                <Form.Label>Email</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Email Address"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    delete formError.email;
+                  }}
+                />
+                {Object.keys(formError).length > 0 && formError.email && (
+                  <small style={{ color: "red" }}>{formError.email}</small>
+                )}
+              </Form.Group>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12} md={6} lg={6}>
+              <Form.Group className="mb-2 text-start" controlId="mobile">
+                <Form.Label>Mobile</Form.Label>
+                <Form.Control
+                  type="number"
+                  placeholder="Mobile Number"
+                  value={mobile}
+                  onChange={(e) => {
+                    setMobile(e.target.value);
+                    delete formError.mobile;
+                  }}
+                />
+                {Object.keys(formError).length > 0 && formError.mobile && (
+                  <small style={{ color: "red" }}>{formError.mobile}</small>
+                )}
+              </Form.Group>
+            </Col>
+            <Col xs={12} md={6} lg={6}>
+              <Form.Group className="mb-2 text-start" controlId="password">
+                <Form.Label>Password</Form.Label>
+                <InputGroup>
+                  <Form.Control
+                    type={showPassword?"text":"password"}
+                    placeholder="Password"
+                    autoComplete="off"
+                    value={password}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      delete formError.password;
+                    }}
+                  />
+                  <InputGroup.Text id="basic-addon2" onClick={()=>settShowPassword(!showPassword)}>
+                    *
+                  </InputGroup.Text>
+                </InputGroup>
+                {Object.keys(formError).length > 0 && formError.password && (
+                  <small style={{ color: "red" }}>{formError.password}</small>
+                )}
+              </Form.Group>
+            </Col>
+          </Row>
+          <div>
+            <Form.Group controlId="formFile" className="mb-2 text-start">
+              <Form.Label>Profile Picture</Form.Label>
+              <Form.Control
+                type="file"
+                onChange={(e) => setFile(e.target.files[0])}
+              />
+            </Form.Group>
+          </div>
+          <div className="w-100 mt-3">
+            <Button type="submit" variant="success" className="w-75">
+              submit
+            </Button>
+          </div>
+        </Form>
+        <p className="my-3">
+          Alread have registed
+          <a> Login</a>
+        </p>
+      </Card>
+    </Container>
   );
 };
 
