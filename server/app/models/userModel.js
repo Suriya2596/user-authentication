@@ -8,11 +8,11 @@ const isNumeric = require("validator/lib/isNumeric")
 const userSchema = new Schema({
     name:{
         type:String,
-        // required:[true,"Name is required"]
+        required:[true,"Name is required"]
     },
     email:{
         type:String,
-        // required:[true,"Email is required"],
+        required:[true,"Email is required"],
         unique:[true,"Already extis"],
         validate:{
             validator:function(value){
@@ -25,7 +25,7 @@ const userSchema = new Schema({
     },
     mobile:{
         type:String,
-        // required:[true,"Mobile number is required"],
+        required:[true,"Mobile number is required"],
         unique:[true,"Already extis"],
         validate:{
             validator:function(value){
@@ -40,7 +40,7 @@ const userSchema = new Schema({
     },
     password:{
         type:String,
-        // required:[true,"Password is required"],
+        required:[true,"Password is required"],
         maxlength:128,
         minlength:8,
     },
