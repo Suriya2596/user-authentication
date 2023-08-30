@@ -1,8 +1,8 @@
 const User = require("../models/userModel");
-
+const asyncHandler = require("express-async-handler")
 const userController = {};
 
-userController.create = async (req, res) => {
+userController.create = asyncHandler(async (req, res) => {
   try {
     const body = req.body;
     const file = req.file;
@@ -17,10 +17,7 @@ userController.create = async (req, res) => {
         });
       }
     } else {
-      res.status(404).json({
-        status: "fail",
-        message: "User already exist",
-      });
+      throw new Error("user is exist")
     }
   } catch (error) {
     res.status(404).json({
@@ -28,6 +25,6 @@ userController.create = async (req, res) => {
       message: error.message,
     });
   }
-};
+});
 
 module.exports = userController;

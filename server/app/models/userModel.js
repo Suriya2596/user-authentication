@@ -13,7 +13,7 @@ const userSchema = new Schema({
     email:{
         type:String,
         required:[true,"Email is required"],
-        unique:[true,"Already extis"],
+        unique:true,
         validate:{
             validator:function(value){
                 return isEmail(value)
@@ -26,7 +26,6 @@ const userSchema = new Schema({
     mobile:{
         type:String,
         required:[true,"Mobile number is required"],
-        unique:[true,"Already extis"],
         validate:{
             validator:function(value){
                 return isNumeric(value)

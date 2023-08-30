@@ -4,6 +4,7 @@ const app = express()
 const cors = require("cors")
 const Port = 3450
 const routes = require("./config/routes")
+const { notFound, errorHandler } = require("./app/middleware/errorHandler")
 
 const configureData = ()=>{
     mongoose.connect("mongodb://127.0.0.1:27017/user-authentication")
@@ -18,8 +19,8 @@ configureData()
 
 app.use(cors())
 app.use(express.json())
-
-
+// app.use(notFound)
+// app.use(errorHandler)
 app.use(routes)
 
 app.listen(Port,()=>{
