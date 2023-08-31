@@ -1,21 +1,14 @@
 const express =  require("express")
 const mongoose = require("mongoose")
-const app = express()
 const cors = require("cors")
-const Port = 3450
 const routes = require("./config/routes")
-const { notFound, errorHandler } = require("./app/middleware/errorHandler")
+const configureDB = require("./config/database")
+// const { notFound, errorHandler } = require("./app/middleware/errorHandler")
 
-const configureData = ()=>{
-    mongoose.connect("mongodb://127.0.0.1:27017/user-authentication")
-        .then(()=>{
-            console.log("connect to database")
-        })
-        .catch(()=>{
-            console.log("Not connected to database")
-        })
-}
-configureData()
+const app = express()
+const Port = 3450
+
+configureDB()
 
 app.use(cors())
 app.use(express.json())

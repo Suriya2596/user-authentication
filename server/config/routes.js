@@ -22,6 +22,7 @@ const upload = multer({
   storage: storage,
 });
 
-routes.post("/api/user", upload.single("file"), userController.create);
+routes.post("/api/user/register", upload.single("file"), userController.register);
+routes.post("/api/user/login", userController.login);
 
 module.exports = routes;
