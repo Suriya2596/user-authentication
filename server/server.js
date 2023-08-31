@@ -3,6 +3,7 @@ const mongoose = require("mongoose")
 const cors = require("cors")
 const routes = require("./config/routes")
 const configureDB = require("./config/database")
+require('dotenv').config()
 // const { notFound, errorHandler } = require("./app/middleware/errorHandler")
 
 const app = express()
