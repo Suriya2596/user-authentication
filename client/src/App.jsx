@@ -1,18 +1,29 @@
 // import React from 'react'
-import Container from "react-bootstrap/esm/Container";
 import "./App.css";
+
+import {
+  Route,
+  RouterProvider,
+  createBrowserRouter,
+  createRoutesFromElements,
+} from "react-router-dom";
+
+import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
-import Row from "react-bootstrap/esm/Row";
-import Col from "react-bootstrap/esm/Col";
+import Page404 from "./routes/Page404";
+
 function App() {
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route>
+        <Route path="/" element={<LoginForm />} />
+        <Route path="/register" element={<RegisterForm />} />
+        <Route path="/*" element={<Page404 />} />
+      </Route>
+    )
+  );
   return (
-    <Container fluid="md">
-      <Row>
-        <Col sm="12">
-          <RegisterForm />
-        </Col>
-      </Row>
-    </Container>
+    <RouterProvider router={router} />
   );
 }
 
