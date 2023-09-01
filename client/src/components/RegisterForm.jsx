@@ -1,4 +1,3 @@
-import axios from "axios";
 import React from "react";
 import {
   Col,
@@ -8,10 +7,27 @@ import {
   Button,
   Card,
   Container,
+  Spinner,
 } from "react-bootstrap";
-import ToastMessage from "../uitles/ToastMessage";
+// import ToastMessage from "../uitles/ToastMessage";
+import { useDispatch, useSelector } from "react-redux";
+import { userRegister } from "../features/User/UserAction";
+import { Link, useNavigate } from "react-router-dom";
 
 const RegisterForm = () => {
+  const dipatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { isError,isRegister, isLoading, isSuccess, message } = useSelector(
+    (state) => state.User
+  );
+
+  React.useEffect(() => {
+    if (isSuccess&&isRegister) {
+      navigate("/login");
+    }
+  }, [isSuccess,isRegister]);
+
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [mobile, setMobile] = React.useState("");
@@ -19,8 +35,6 @@ const RegisterForm = () => {
   const [file, setFile] = React.useState("");
   const [formError, setFormError] = React.useState({});
   const [showPassword, settShowPassword] = React.useState(false);
-  const [show, setShow] = React.useState(false);
-  const [data,setData] = React.useState({});
 
   let formErr = {};
 
@@ -63,38 +77,36 @@ const RegisterForm = () => {
       setFormError(formErr);
       console.log(formErr);
     } else {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("name", name);
-      formData.append("email", email);
-      formData.append("mobile", mobile);
-      formData.append("password", password);
-      console.log(file);
-      axios
-        .post("http://localhost:3450/api/user/register", formData)
-        .then((response) => {
-          console.log(response);
-          if(response.data && response.data.status==="fail"){
-            setShow(true)
-            setData(response.data)
-          }
-          resolve();
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      const formData = {
+        file,
+        name,
+        email,
+        mobile,
+        password,
+      };
+      // formData.append("file", file);
+      // formData.append("name", name);
+      // formData.append("email", email);
+      // formData.append("mobile", mobile);
+      // formData.append("password", password);
+      dipatch(userRegister(formData));
     }
   };
 
-  const resolve = () => {
-    setName("");
-    setEmail("");
-    setMobile("");
-    setPassword("");
-    setFile("");
-    setFormError({});
-    settShowPassword(false);
-  };
+  // const resolve = () => {
+  //   setName("");
+  //   setEmail("");
+  //   setMobile("");
+  //   setPassword("");
+  //   setFile("");
+  //   setFormError({});
+  //   settShowPassword(false);
+  // };
+
+  if (isLoading) {
+    return <Spinner animation="border" />;
+  }
+
   return (
     <Container>
       <Row className="d-flex justify-content-center">
@@ -102,6 +114,7 @@ const RegisterForm = () => {
           <Card>
             <Card.Title className="mb-3 ">User Register</Card.Title>
             <Form onSubmit={handleFormSubmit}>
+              {isError && <p style={{ color: "red" }}>{message}</p>}
               <Row>
                 <Col xs={12} md={6} lg={6}>
                   <Form.Group className="mb-2 text-start" controlId="name">
@@ -203,14 +216,11 @@ const RegisterForm = () => {
             </Form>
             <p className="my-3">
               Alread have registed
-              <a> Login</a>
+              <Link to="/login"> Login</Link>
             </p>
           </Card>
         </Col>
       </Row>
-      {
-        show && <ToastMessage show={show} setShow={setShow} heading={data.status} messsage={data.messsage}/>
-      }
     </Container>
   );
 };

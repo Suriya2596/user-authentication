@@ -1,34 +1,52 @@
 const User = require("../models/userModel");
-const asyncHandler = require("express-async-handler")
+// const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const userController = {};
 
-userController.register = asyncHandler(async (req, res) => {
-  try {
-    const body = req.body;
-    const file = req.file;
-    body.file = file
-    const user = await User.findOne({ email: body.email });
-    if (!user) {
-      const newUser = await User.create(body);
-      if (newUser) {
-        res.status(200).json({
-          status: "success",
-          data: newUser,
-        });
+userController.register = (req, res) => {
+  const body = req.body;
+  User.findOne({ email: body.email })
+    .then((user) => {
+      if (!user) {
+        bcrypt
+          .genSalt(10)
+          .then((salt) => {
+            bcrypt
+              .hash(body.password, salt)
+              .then((encrypt) => {
+                body.password = encrypt;
+                User.create(body)
+                  .then((newUser) => {
+                    const data = {
+                      _id: newUser._id,
+                      name: newUser.name,
+                      email: newUser.email,
+                    };
+                    res.json(data);
+                  })
+                  .catch((err) => {
+                    res.json(err);
+                  });
+              })
+              .catch((err) => {
+                res.json(err);
+              });
+          })
+          .catch((err) => {
+            res.json(err);
+          });
+      }else{
+        res.status(400).json({
+          message:"user is already exist"
+        })
       }
-    } else {
-      throw new Error("user is exist")
-    }
-  } catch (error) {
-    res.status(404).json({
-      status: "fail",
-      message: error.message,
+    })
+    .catch((err) => {
+      res.json(err);
     });
-  }
-});
+};
 
 userController.login = (req, res) => {
   const body = req.body;
@@ -46,22 +64,20 @@ userController.login = (req, res) => {
               const token = jwt.sign(tokenData, process.env.JWT, {
                 expiresIn: "2d",
               });
-              res.json({ token: `Bearer ${token}` })
+              res.json({ token: `Bearer ${token}` });
             } else {
-              res.json({
-                errors: "Invalid email or password",
-                message: "Invalidate email or password",
-              });
+              res.status(400).json({
+                message:"Invalidate email or password"
+              })
             }
           })
           .catch((err) => {
             res.json(err);
           });
       } else {
-        res.json({
-          errors: "Invalid email or password",
-          message: "Invalidate email or password",
-        });
+        res.status(400).json({
+          message:"Invalidate email or password"
+        })
       }
     })
     .catch((err) => {

@@ -9,6 +9,7 @@ import {
   Card,
   Container,
 } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const LoginForm = () => {
   const [email, setEmail] = React.useState("");
@@ -134,7 +135,7 @@ const LoginForm = () => {
               </Form>
               <p className="my-3">
                 Not been registed
-                <a> Register Now</a>
+                <Link to="/register"> Register Now</Link>
               </p>
             </Card>
           </Col>
