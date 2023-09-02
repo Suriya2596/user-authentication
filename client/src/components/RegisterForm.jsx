@@ -18,15 +18,9 @@ const RegisterForm = () => {
   const dipatch = useDispatch();
   const navigate = useNavigate();
 
-  const { isError,isRegister, isLoading, isSuccess, message } = useSelector(
+  const { isError, isLoading, message } = useSelector(
     (state) => state.User
   );
-
-  React.useEffect(() => {
-    if (isSuccess&&isRegister) {
-      navigate("/login");
-    }
-  }, [isSuccess,isRegister]);
 
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
@@ -69,6 +63,17 @@ const RegisterForm = () => {
     }
   };
 
+  const resolve = () => {
+    setName("");
+    setEmail("");
+    setMobile("");
+    setPassword("");
+    setFile("");
+    setFormError({});
+    settShowPassword(false);
+    navigate("/login");
+  };
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
     handleFormError();
@@ -89,19 +94,12 @@ const RegisterForm = () => {
       // formData.append("email", email);
       // formData.append("mobile", mobile);
       // formData.append("password", password);
-      dipatch(userRegister(formData));
+      const req = {
+        formData,resolve
+      }
+      dipatch(userRegister(req));
     }
   };
-
-  // const resolve = () => {
-  //   setName("");
-  //   setEmail("");
-  //   setMobile("");
-  //   setPassword("");
-  //   setFile("");
-  //   setFormError({});
-  //   settShowPassword(false);
-  // };
 
   if (isLoading) {
     return <Spinner animation="border" />;

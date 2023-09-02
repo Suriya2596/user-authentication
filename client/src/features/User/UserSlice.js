@@ -7,7 +7,6 @@ const initialState = {
   isError: false,
   isLoading: false,
   isSuccess:false,
-  isRegister:false
 };
 
 const UserSlice = createSlice({
@@ -20,7 +19,6 @@ const UserSlice = createSlice({
       state.isError = false;
       state.isLoading = false;
       state.isSuccess = false
-      state.isRegister = false
     },
   },
   extraReducers: (builder) => {
@@ -29,12 +27,11 @@ const UserSlice = createSlice({
         state.message = null
         state.isError = false
         state.isSuccess = false
-        state.isRegister = false
     });
     builder.addCase(userRegister.fulfilled,(state,action)=>{
         state.isLoading = false
-        state.isSuccess = action.payload
-        state.isRegister = action.payload
+        state.isSuccess = true
+        state.userData = action.payload
         state.message = null
         state.isError = false
     });
@@ -43,7 +40,6 @@ const UserSlice = createSlice({
         state.message = action.payload
         state.isError = true
         state.isSuccess = false
-        state.isRegister = false
     });
   },
 });
