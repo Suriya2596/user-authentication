@@ -37,9 +37,9 @@ userController.register = (req, res) => {
           .catch((err) => {
             res.json(err);
           });
-      }else{
+      } else {
         res.status(400).json({
-          message:"user is already exist"
+          message: "user is already exist"
         })
       }
     })
@@ -67,7 +67,7 @@ userController.login = (req, res) => {
               res.json({ token: `Bearer ${token}` });
             } else {
               res.status(400).json({
-                message:"Invalidate email or password"
+                message: "Invalidate email or password"
               })
             }
           })
@@ -76,7 +76,7 @@ userController.login = (req, res) => {
           });
       } else {
         res.status(400).json({
-          message:"Invalidate email or password"
+          message: "Invalidate email or password"
         })
       }
     })

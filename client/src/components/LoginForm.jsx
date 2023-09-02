@@ -1,4 +1,3 @@
-import axios from "axios";
 import React from "react";
 import {
   Col,
@@ -9,9 +8,13 @@ import {
   Card,
   Container,
 } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { userLogin } from "../features/User/UserAction";
 
 const LoginForm = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [formError, setFormError] = React.useState({});
@@ -37,6 +40,16 @@ const LoginForm = () => {
     }
   };
 
+  const resolve = () => {
+    setEmail("");
+    setPassword("");
+    setFormError({});
+    settShowPassword(false);
+    if (localStorage.getItem("token")) {
+      navigate("/");
+    }
+  };
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
     handleFormError();
@@ -45,27 +58,17 @@ const LoginForm = () => {
       setFormError(formErr);
       console.log(formErr);
     } else {
-      const formData = new FormData();
-      formData.append("email", email);
-      formData.append("password", password);
-      axios
-        .post("http://localhost:3450/api/user/login", formData)
-        .then((response) => {
-          console.log(response);
-          resolve();
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      const formData = {email,password};
+      // formData.append("email", email);
+      // formData.append("password", password);
+      const req = {
+        formData,
+        resolve,
+      };
+      dispatch(userLogin(req));
     }
   };
 
-  const resolve = () => {
-    setEmail("");
-    setPassword("");
-    setFormError({});
-    settShowPassword(false);
-  };
   return (
     <>
       <Container>
