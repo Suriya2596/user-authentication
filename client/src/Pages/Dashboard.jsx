@@ -1,11 +1,13 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Card, Col, Container, ListGroup, Row, Spinner } from "react-bootstrap";
+import { Button, Card, Col, Container, ListGroup, Row, Spinner } from "react-bootstrap";
 
 import { userAccount } from "../features/User/UserAction";
+import EditProfilePic from "../components/EditProfilePic";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
+  const [picEdit,setPicEdit] = React.useState(false)
 
   React.useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -13,30 +15,32 @@ const Dashboard = () => {
     }
   }, [dispatch]);
 
-  const {isError,
-    isLoading,
-    message,
-    userData
-    } = useSelector((state) => state.User);
+  const { isError, isLoading, message, userData } = useSelector(
+    (state) => state.User
+  );
 
-  console.log(userData);
+  const handlePicEdit = ()=>setPicEdit(!picEdit)
 
-  if(isLoading){
-    return <Spinner />
-  }
+  // console.log(userData);
 
-  if(isError){
-    return <p>{message}</p>
+  if (isLoading) {
+    return <Spinner />;
   }
 
   return (
     <div>
       <p>Dashboard</p>
+      {
+        isError && <p style={{color:"red"}}>{message}</p>
+      }
       <Container>
         <Row className="d-flex justify-content-center">
           <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
             <Card>
               <Card.Img variant="top" src="holder.js/100px180?text=Image cap" />
+              {
+                picEdit ? <EditProfilePic handlePicEdit={handlePicEdit}/> : <Button onClick={handlePicEdit}>Edit Profile Picture</Button>
+              }
               <Card.Body>
                 <Card.Title>{userData.name}</Card.Title>
               </Card.Body>

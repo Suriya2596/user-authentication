@@ -53,3 +53,23 @@ export const userAccount = createAsyncThunk("user/account", async (_, thunkApi) 
         return thunkApi.rejectWithValue(message)
     }
 })
+
+export const userProfilePic = createAsyncThunk("user/pic", async (formData, thunkApi) => {
+    console.log(formData)
+    try {
+        const response = await axios.post("http://localhost:3450/api/user/profilePic", formData, {
+            headers: {
+                "Authorization": localStorage.getItem("token")
+            }
+        })
+        console.log(response)
+        if (response.data && response.data._id) {
+            return response.data
+        }
+        const message = "Something went wrong! try again"
+        return thunkApi.rejectWithValue(message)
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+        return thunkApi.rejectWithValue(message)
+    }
+})

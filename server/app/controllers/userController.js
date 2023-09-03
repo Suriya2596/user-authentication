@@ -86,19 +86,29 @@ userController.login = (req, res) => {
     });
 };
 
-userController.profilePic = (req,res)=>{
-  const _id = req.params._id
-  const file = req.body.file
-  User.findOneAndUpdate({_id:_id},file)
-  .then((user)=>{
-    res.json(user)
-  })
-  .catch((err)=>{
-    res.json(err)
-  })
+userController.profilePic = (req, res) => {
+  // const _id = req.params._id
+  const body = req.body
+  console.log(body)
+  User.findOneAndUpdate({ _id: req._id }, body,{runValidators:true,new:true})
+    .then((user) => {
+      console.log(user)
+      if (user && user._id) {
+        res.json(user)
+      } else {
+        res.status(400).json({
+          error: "Invalidate file or user",
+          message: "Invalidate file or user"
+        })
+      }
+    })
+    .catch((err) => {
+      console.log(err)
+      res.json(err)
+    })
 }
 
-userController.account = (req,res)=>{
+userController.account = (req, res) => {
   res.json(req.user)
 }
 
