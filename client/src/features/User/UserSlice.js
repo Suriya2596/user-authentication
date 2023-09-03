@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { userRegister } from "./UserAction";
+import { userAccount, userRegister } from "./UserAction";
 
 const initialState = {
   userData: {},
@@ -41,6 +41,26 @@ const UserSlice = createSlice({
         state.isError = true
         state.isSuccess = false
     });
+    //account
+    builder.addCase(userAccount.pending,(state)=>{
+      state.isLoading = true
+      state.message = null
+      state.isError = false
+      state.isSuccess = false
+  });
+  builder.addCase(userAccount.fulfilled,(state,action)=>{
+      state.isLoading = false
+      state.isSuccess = true
+      state.userData = action.payload
+      state.message = null
+      state.isError = false
+  });
+  builder.addCase(userAccount.rejected,(state,action)=>{
+      state.isLoading = false
+      state.message = action.payload
+      state.isError = true
+      state.isSuccess = false
+  });
   },
 });
 

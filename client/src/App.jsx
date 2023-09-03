@@ -13,8 +13,17 @@ import RegisterForm from "./components/RegisterForm";
 import Page404 from "./routes/Page404";
 import Dashboard from "./Pages/Dashboard";
 import { LogedInRouter, PrivateRouter } from "./routes/PrivateRouter";
-
+import {useDispatch} from "react-redux"
+import React from "react";
+import { userAccount } from "./features/User/UserAction";
 function App() {
+  const dispatch = useDispatch()
+
+  React.useEffect(()=>{
+    if(localStorage.getItem("token")){
+      dispatch(userAccount())
+    }
+  },[dispatch])
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route>

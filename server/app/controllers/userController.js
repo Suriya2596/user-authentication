@@ -59,7 +59,8 @@ userController.login = (req, res) => {
             if (match) {
               const tokenData = {
                 _id: user._id,
-                name: user.name,
+                email: user.email,
+                role: user.role,
               };
               const token = jwt.sign(tokenData, process.env.JWT, {
                 expiresIn: "2d",
@@ -84,5 +85,11 @@ userController.login = (req, res) => {
       res.json(err);
     });
 };
+
+userController.account = (req,res)=>{
+  res.json(req.user)
+}
+
+
 
 module.exports = userController;
