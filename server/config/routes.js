@@ -25,6 +25,7 @@ const upload = multer({
 
 routes.post("/api/user/register", upload.single("file"), userController.register);
 routes.post("/api/user/login", userController.login);
+routes.post("/api/user/profilePic/:id", upload.single("file"), userController.profilePic);
 routes.get("/api/user", authentication, userController.account);
 
 module.exports = routes;

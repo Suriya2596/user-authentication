@@ -26,7 +26,6 @@ const RegisterForm = () => {
   const [email, setEmail] = React.useState("");
   const [mobile, setMobile] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [file, setFile] = React.useState("");
   const [formError, setFormError] = React.useState({});
   const [showPassword, settShowPassword] = React.useState(false);
 
@@ -68,7 +67,6 @@ const RegisterForm = () => {
     setEmail("");
     setMobile("");
     setPassword("");
-    setFile("");
     setFormError({});
     settShowPassword(false);
     navigate("/login");
@@ -83,7 +81,6 @@ const RegisterForm = () => {
       console.log(formErr);
     } else {
       const formData = {
-        file,
         name,
         email,
         mobile,
@@ -197,15 +194,6 @@ const RegisterForm = () => {
                   </Form.Group>
                 </Col>
               </Row>
-              <div>
-                <Form.Group controlId="formFile" className="mb-2 text-start">
-                  <Form.Label>Profile Picture</Form.Label>
-                  <Form.Control
-                    type="file"
-                    onChange={(e) => setFile(e.target.files[0])}
-                  />
-                </Form.Group>
-              </div>
               <div className="w-100 mt-3">
                 <Button type="submit" variant="success" className="w-75">
                   submit

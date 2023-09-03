@@ -86,6 +86,18 @@ userController.login = (req, res) => {
     });
 };
 
+userController.profilePic = (req,res)=>{
+  const _id = req.params._id
+  const file = req.body.file
+  User.findOneAndUpdate({_id:_id},file)
+  .then((user)=>{
+    res.json(user)
+  })
+  .catch((err)=>{
+    res.json(err)
+  })
+}
+
 userController.account = (req,res)=>{
   res.json(req.user)
 }

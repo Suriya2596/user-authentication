@@ -13,19 +13,19 @@ const authentication = (req, res, next) => {
                         req.user = user
                         next()
                     } else {
-                        res.status(400).json({
+                        res.status(401).json({
                             message: "User is Not found",
                         })
                     }
                 })
         } else {
-            res.status(400).json({
+            res.status(401).json({
                 message: "Invalidate Token"
             })
         }
 
     } catch (error) {
-        res.status(400).json({
+        res.status(401).json({
             message: "Invalidate Token",
             error: error
         })
@@ -39,12 +39,12 @@ const authorization = (req, res, next) => {
                 if (user.role === "admin") {
                     next()
                 } else {
-                    res.status(400).json({
+                    res.status(401).json({
                         message: "You are not allowed to access"
                     })
                 }
             } else {
-                res.status(400).json({
+                res.status(401).json({
                     message: "User is not found"
                 })
             }
