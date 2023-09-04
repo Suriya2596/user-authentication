@@ -25,12 +25,13 @@ const EditProfilePic = ({ handlePicEdit }) => {
   };
 
   return (
-    <form onSubmit={handleFormSubmit} >
+    <form onSubmit={handleFormSubmit}  action="/api/user/profilePic" method="post" encType="multipart/form-data">
       <div>
         <Form.Group controlId="formFile" className="mb-2 text-start">
           <Form.Label>Profile Picture</Form.Label>
           <Form.Control
             type="file"
+            name="file"
             onChange={(e) => setFile(e.target.files[0])}
           />
           <Button type="submit">Save</Button>

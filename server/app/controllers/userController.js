@@ -89,7 +89,7 @@ userController.login = (req, res) => {
 userController.profilePic = (req, res) => {
   // const _id = req.params._id
   const body = req.body
-  console.log(body)
+  console.log(body.file)
   User.findOneAndUpdate({ _id: req._id }, body,{runValidators:true,new:true})
     .then((user) => {
       console.log(user)
