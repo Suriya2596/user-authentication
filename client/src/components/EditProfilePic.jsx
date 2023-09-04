@@ -11,12 +11,9 @@ const EditProfilePic = ({ handlePicEdit }) => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     if (file) {
-      // const formData = new FormData();
-      // formData.append("file", formData.getAll("file")[0]);
+      const formData = new FormData();
+      formData.append("file", file);
       // console.log(formData.getAll("file")); // Check if the file is added to formData
-      const formData = {
-        file
-      }
       dispatch(userProfilePic(formData))
     }
     resolve()
@@ -28,7 +25,7 @@ const EditProfilePic = ({ handlePicEdit }) => {
   };
 
   return (
-    <Form onSubmit={handleFormSubmit} >
+    <form onSubmit={handleFormSubmit} >
       <div>
         <Form.Group controlId="formFile" className="mb-2 text-start">
           <Form.Label>Profile Picture</Form.Label>
@@ -39,7 +36,7 @@ const EditProfilePic = ({ handlePicEdit }) => {
           <Button type="submit">Save</Button>
         </Form.Group>
       </div>
-    </Form>
+    </form>
   );
 };
 
