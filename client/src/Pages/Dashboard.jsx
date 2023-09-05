@@ -37,7 +37,7 @@ const Dashboard = () => {
         <Row className="d-flex justify-content-center">
           <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
             <Card>
-              <Card.Img variant="top" src="holder.js/100px180?text=Image cap" />
+              <img src={`http://localhost:3450${userData.file}`} alt="Profile Picture" />
               {
                 picEdit ? <EditProfilePic handlePicEdit={handlePicEdit}/> : <Button onClick={handlePicEdit}>Edit Profile Picture</Button>
               }

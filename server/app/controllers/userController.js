@@ -87,10 +87,11 @@ userController.login = (req, res) => {
 };
 
 userController.profilePic = (req, res) => {
-  // const _id = req.params._id
-  const body = req.body
-  console.log(body.file)
-  User.findOneAndUpdate({ _id: req._id }, body,{runValidators:true,new:true})
+  const file = req.file
+  const user = req.user
+  console.log(req,93)
+  console.log(file,94)
+  User.findOneAndUpdate({ _id: user._id }, {"file":`/public/images/${file.filename}`},{runValidators:true,new:true})
     .then((user) => {
       console.log(user)
       if (user && user._id) {

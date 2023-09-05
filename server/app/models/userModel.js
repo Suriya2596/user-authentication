@@ -44,8 +44,8 @@ const userSchema = new Schema({
         minlength:8,
     },
     file:{
-        type:Object,
-        default:{}
+        type:String,
+        default:""
     },
     role:{
         type:String,
