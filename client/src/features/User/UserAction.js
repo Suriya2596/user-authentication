@@ -29,6 +29,7 @@ export const userLogin = createAsyncThunk("user/login", async (req, thunkApi) =>
             return req.resolve()
         }
     } catch (error) {
+        console.log(error.response)
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
         return thunkApi.rejectWithValue(message)
     }
@@ -41,6 +42,7 @@ export const userAccount = createAsyncThunk("user/account", async (_, thunkApi) 
                 "Authorization": localStorage.getItem("token")
             }
         })
+        // console.log(response,80)
         if (response.data && response.data._id) {
             return response.data
         }
@@ -49,6 +51,9 @@ export const userAccount = createAsyncThunk("user/account", async (_, thunkApi) 
             return thunkApi.rejectWithValue(message)
         }
     } catch (error) {
+        if(error.response && error.response.data && error.response.data.message && error.response.data.message==="Invalidate Token"){
+            localStorage.removeItem("token")
+        }
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
         return thunkApi.rejectWithValue(message)
     }
@@ -69,6 +74,9 @@ export const userProfilePic = createAsyncThunk("user/pic", async (formData, thun
         const message = "Something went wrong! try again"
         return thunkApi.rejectWithValue(message)
     } catch (error) {
+        if(error.response && error.response.data && error.response.data.message && error.response.data.message==="Invalidate Token"){
+            localStorage.removeItem("token")
+        }
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
         return thunkApi.rejectWithValue(message)
     }

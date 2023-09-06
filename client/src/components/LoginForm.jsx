@@ -9,7 +9,7 @@ import {
   Container,
 } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userLogin } from "../features/User/UserAction";
 
 const LoginForm = () => {
@@ -21,6 +21,8 @@ const LoginForm = () => {
   const [showPassword, settShowPassword] = React.useState(false);
 
   let formErr = {};
+
+  const { isError, message } = useSelector((state) => state.User);
 
   const verifyEmail = (value) => {
     var emailRex =
@@ -58,7 +60,7 @@ const LoginForm = () => {
       setFormError(formErr);
       console.log(formErr);
     } else {
-      const formData = {email,password};
+      const formData = { email, password };
       // formData.append("email", email);
       // formData.append("password", password);
       const req = {
@@ -76,6 +78,11 @@ const LoginForm = () => {
           <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
             <Card>
               <Card.Title className="mb-3 ">User Login</Card.Title>
+              {isError && (
+                <div>
+                  <p style={{ color: "red" }}>{message}</p>
+                </div>
+              )}
               <Form onSubmit={handleFormSubmit}>
                 <Row>
                   <Col xs={12} md={12} lg={12}>

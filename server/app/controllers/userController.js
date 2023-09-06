@@ -89,9 +89,9 @@ userController.login = (req, res) => {
 userController.profilePic = (req, res) => {
   const file = req.file
   const user = req.user
-  console.log(req,93)
-  console.log(file,94)
-  User.findOneAndUpdate({ _id: user._id }, {"file":`/public/images/${file.filename}`},{runValidators:true,new:true})
+  console.log(req, 93)
+  console.log(file, 94)
+  User.findOneAndUpdate({ _id: user._id }, { "file": `/public/images/${file.filename}` }, { runValidators: true, new: true })
     .then((user) => {
       console.log(user)
       if (user && user._id) {
@@ -104,7 +104,6 @@ userController.profilePic = (req, res) => {
       }
     })
     .catch((err) => {
-      console.log(err)
       res.json(err)
     })
 }
@@ -113,6 +112,47 @@ userController.account = (req, res) => {
   res.json(req.user)
 }
 
+userController.resetPassword = (req, res) => {
+  const password = req.body.password
+  User.findOne({ _id: req.user._id })
+    .then((user) => {
+      if (user) {
+        bcrypt.genSalt(2)
+          .then((salt) => {
+            if (salt) {
+              bcrypt.hash(password, salt)
+                .then((encryptPassword) => {
+                  if (encryptPassword) {
+                    user.password = encryptPassword
+                    User.findOneAndUpdate({ _id: req.user._id }, user, { new: true })
+                      .then((userData) => {
+                        // console.log(encryptPassword,password, user.password,userData)
+                        res.json(userData)
+                      })
+                      .catch((err) => {
+                        res.json(err)
+                      })
+                  }
+                })
+                .catch((err) => {
+                  res.json(err)
+                })
+            }
+          })
+          .catch((err) => {
+            res.json(err)
+          })
+      } else {
+        res.status(400).json({
+          error: "Invalidate User",
+          message: "Invalidate User"
+        })
+      }
+    })
+    .catch((err) => {
+      res.json(err)
+    })
+}
 
 
 module.exports = userController;

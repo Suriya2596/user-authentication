@@ -14,13 +14,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { userRegister } from "../features/User/UserAction";
 import { Link, useNavigate } from "react-router-dom";
 
+import { BsFillLockFill, BsFillUnlockFill } from "react-icons/bs";
+
 const RegisterForm = () => {
   const dipatch = useDispatch();
   const navigate = useNavigate();
 
-  const { isError, isLoading, message } = useSelector(
-    (state) => state.User
-  );
+  const { isError, isLoading, message } = useSelector((state) => state.User);
 
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
@@ -92,8 +92,9 @@ const RegisterForm = () => {
       // formData.append("mobile", mobile);
       // formData.append("password", password);
       const req = {
-        formData,resolve
-      }
+        formData,
+        resolve,
+      };
       dipatch(userRegister(req));
     }
   };
@@ -182,7 +183,15 @@ const RegisterForm = () => {
                         id="basic-addon2"
                         onClick={() => settShowPassword(!showPassword)}
                       >
-                        *
+                        {showPassword ? (
+                          <div>
+                            <BsFillUnlockFill />
+                          </div>
+                        ) : (
+                          <div>
+                            <BsFillLockFill />
+                          </div>
+                        )}
                       </InputGroup.Text>
                     </InputGroup>
                     {Object.keys(formError).length > 0 &&
