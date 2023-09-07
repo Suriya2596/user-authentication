@@ -22,14 +22,14 @@ First, it checks if the user's email address exists in the database; if not, it 
 If the user exists, it compares the bcrypt-hashed password, and if the comparison is successful, it generates a token using the user's credentials.
 
 #### Middleware for Authorization:
-I create middleware to check the Authorization header token in incoming requests. If the token is valid, the request is allowed to proceed; otherwise, it's denied access to modify or retrieve data.
+I created middleware to check the Authorization header token in incoming requests. If the token is valid, the request is allowed to proceed; otherwise, it's denied access to modify or retrieve data.
 
 #### Updating User Credentials:
 I provide a route for updating user credentials using the HTTP PUT method.
 
 Packages used in the backend: Express, Mongoose, CORS, Bcrypt, dotenv, JSON Web Token (JWT), Multer, Path, Validator.
 
-## Frontend Client
+### Frontend Client
 In the frontend client, I handle user authentication and API calls using React, React Router, Redux, and Axios. Here's how it works:
 
 #### Private Routes:
