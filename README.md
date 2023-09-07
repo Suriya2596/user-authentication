@@ -29,7 +29,7 @@ We provide a route for updating user credentials using the HTTP PUT method.
 
 Packages used in the backend: Express, Mongoose, CORS, Bcrypt, dotenv, JSON Web Token (JWT), Multer, Path, Validator.
 
-## Frontend Client
+### Frontend Client
 In the frontend client, we handle user authentication and API calls using React, React Router, Redux, and Axios. Here's how it works:
 
 1. Private Routes:

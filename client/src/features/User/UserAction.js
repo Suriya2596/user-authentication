@@ -105,7 +105,7 @@ export const userResetPassword = createAsyncThunk("user/resetPassword",async (re
         if(response.data && response.data._id){
             req.resolve()
             window.alert("Success full reset your password! Please login again")
-            return response.data
+            return {}
         }
         const message = "Something went wrong! try again"
         return thunkApi.rejectWithValue(message)
