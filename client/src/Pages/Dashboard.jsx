@@ -10,8 +10,9 @@ import {
   Spinner,
 } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { userAccount } from "../features/User/UserAction";
+import { userAccount, userLogout } from "../features/User/UserAction";
 import EditProfilePic from "../components/EditProfilePic";
+import { userRest } from "../features/User/UserSlice";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -39,6 +40,12 @@ const Dashboard = () => {
   if (isError && message == "Invalidate Token") {
     navigate("/login");
   }
+
+  const handleLogout = () => {
+    dispatch(userLogout());
+    navigate("/login");
+    dispatch(userRest());
+  };
 
   return (
     <>
@@ -69,11 +76,20 @@ const Dashboard = () => {
               </ListGroup>
               <Card.Body>
                 <Row>
-                  <Col xs={12} sm={12} md={12} lg={6} xl={6} xxl={6}>
-                    <Link to={"/resetPassword"}>Reset Password</Link>
+                  <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
+                    <div className="mb-3">
+                      <Link to={"/userUpdate"}>Edit User Details</Link>
+                    </div>
                   </Col>
                   <Col xs={12} sm={12} md={12} lg={6} xl={6} xxl={6}>
-                    <Card.Link href="#">Logout</Card.Link>
+                    <div className="mb-3">
+                      <Link to={"/resetPassword"}>Reset Password</Link>
+                    </div>
+                  </Col>
+                  <Col xs={12} sm={12} md={12} lg={6} xl={6} xxl={6}>
+                    <div className="mb-3">
+                      <Card.Link onClick={handleLogout}>Logout</Card.Link>
+                    </div>
                   </Col>
                 </Row>
               </Card.Body>

@@ -17,6 +17,7 @@ import {useDispatch} from "react-redux"
 import React from "react";
 import { userAccount } from "./features/User/UserAction";
 import ResetPassword from "./components/ResetPassword";
+import EditUser from "./components/EditUser";
 function App() {
   const dispatch = useDispatch()
 
@@ -31,6 +32,7 @@ function App() {
         <Route path="/" element={<PrivateRouter />}>
           <Route path="/" index element={<Dashboard />} />
           <Route path="/resetPassword" element={<ResetPassword />} />
+          <Route path="/userUpdate" element={<EditUser />} />
         </Route>
         <Route element={<LogedInRouter />}>
           <Route path="/login" element={<LoginForm />} />

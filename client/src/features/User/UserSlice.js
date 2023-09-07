@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { userAccount, userLogin, userProfilePic, userRegister, userResetPassword } from "./UserAction";
+import { userAccount, userLogin, userLogout, userProfilePic, userRegister, userResetPassword, userUpdate } from "./UserAction";
 
 const initialState = {
   userData: {},
@@ -80,6 +80,26 @@ const UserSlice = createSlice({
       state.isError = true
       state.isSuccess = false
     });
+    // update
+    builder.addCase(userUpdate.pending, (state) => {
+      state.isLoading = true
+      state.message = null
+      state.isError = false
+      state.isSuccess = false
+    });
+    builder.addCase(userUpdate.fulfilled, (state, action) => {
+      state.isLoading = false
+      state.isSuccess = true
+      state.userData = action.payload
+      state.message = null
+      state.isError = false
+    });
+    builder.addCase(userUpdate.rejected, (state, action) => {
+      state.isLoading = false
+      state.message = action.payload
+      state.isError = true
+      state.isSuccess = false
+    });
     // pic update
     builder.addCase(userProfilePic.pending, (state) => {
       state.isLoading = true
@@ -115,6 +135,26 @@ const UserSlice = createSlice({
       state.isError = false
     });
     builder.addCase(userResetPassword.rejected, (state, action) => {
+      state.isLoading = false
+      state.message = action.payload
+      state.isError = true
+      state.isSuccess = false
+    });
+    // userLogout
+    builder.addCase(userLogout.pending, (state) => {
+      state.isLoading = true
+      state.message = null
+      state.isError = false
+      state.isSuccess = false
+    });
+    builder.addCase(userLogout.fulfilled, (state, action) => {
+      state.isLoading = false
+      state.isSuccess = true
+      state.userData = action.payload
+      state.message = null
+      state.isError = false
+    });
+    builder.addCase(userLogout.rejected, (state, action) => {
       state.isLoading = false
       state.message = action.payload
       state.isError = true

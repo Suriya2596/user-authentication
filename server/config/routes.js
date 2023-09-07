@@ -27,5 +27,6 @@ routes.post("/api/user/register", upload.single("file"), userController.register
 routes.post("/api/user/login", userController.login);
 routes.post("/api/user/profilePic", authentication, upload.single("file"), userController.profilePic);
 routes.get("/api/user", authentication, userController.account);
+routes.put("/api/user/update", authentication, userController.update);
 routes.post("/api/user/resetPassword", authentication, userController.resetPassword);
 module.exports = routes;

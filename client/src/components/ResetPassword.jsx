@@ -10,7 +10,7 @@ import {
 } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { userResetPassword } from "../features/User/UserAction";
+import { userLogout, userResetPassword } from "../features/User/UserAction";
 import { BsFillLockFill, BsFillUnlockFill } from "react-icons/bs";
 import { userRest } from "../features/User/UserSlice";
 
@@ -51,10 +51,11 @@ const ResetPassword = () => {
     setFormError({});
     settShowPassword(false);
     if(localStorage.getItem("token")){
-        localStorage.removeItem("token")
+        dispatch(userLogout())
+        dispatch(userRest())
         navigate("/login")
     }
-    dispatch(userRest())
+   
   };
 
   const handleFormSubmit = (e) => {

@@ -112,6 +112,27 @@ userController.account = (req, res) => {
   res.json(req.user)
 }
 
+userController.update = (req,res)=>{
+  const data = {
+    name:req.body.name,
+    mobile:req.body.mobile
+  }
+  User.findOneAndUpdate({_id:req.user._id},data,{runValidators:true,new:true})
+  .then((user)=>{
+    if(user){
+      res.json(user)
+    }else{
+      res.status(400).json({
+        error: "Invalidate user",
+        message: "Invalidate user"
+      })
+    }
+  })
+  .catch((err) => {
+    res.json(err)
+  })
+}
+
 userController.resetPassword = (req, res) => {
   const password = req.body.password
   User.findOne({ _id: req.user._id })

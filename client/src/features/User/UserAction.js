@@ -82,6 +82,28 @@ export const userProfilePic = createAsyncThunk("user/pic", async (formData, thun
     }
 })
 
+export const userUpdate = createAsyncThunk("user/update",async(req,thunkApi)=>{
+    try {
+        const response = await axios.put("http://localhost:3450/api/user/update",req.formData,{
+            headers:{Authorization:localStorage.getItem("token")}
+        })
+        // console.log(response)
+        if (response.data && response.data._id) {
+            req.resolve()
+            return response.data
+        }
+        const message = "Something went wrong! try again"
+        return thunkApi.rejectWithValue(message)
+
+    } catch (error) {
+        if(error.response && error.response.data && error.response.data.message && error.response.data.message==="Invalidate Token"){
+            localStorage.removeItem("token")
+        }
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+        return thunkApi.rejectWithValue(message)
+    }
+})
+
 export const userResetPassword = createAsyncThunk("user/resetPassword",async (req,thunkApi)=>{
     try {
         const response = await axios.post("http://localhost:3450/api/user/resetPassword",req.formData,{
@@ -103,5 +125,12 @@ export const userResetPassword = createAsyncThunk("user/resetPassword",async (re
             localStorage.removeItem("token")
         }
         return thunkApi.rejectWithValue(message)
+    }
+})
+
+export const userLogout = createAsyncThunk("user/logout",()=>{
+    if(localStorage.getItem("token")){
+        localStorage.removeItem("token")
+        return {}
     }
 })
