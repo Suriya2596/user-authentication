@@ -86,11 +86,6 @@ const RegisterForm = () => {
         mobile,
         password,
       };
-      // formData.append("file", file);
-      // formData.append("name", name);
-      // formData.append("email", email);
-      // formData.append("mobile", mobile);
-      // formData.append("password", password);
       const req = {
         formData,
         resolve,

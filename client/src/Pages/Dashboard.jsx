@@ -31,8 +31,6 @@ const Dashboard = () => {
 
   const handlePicEdit = () => setPicEdit(!picEdit);
 
-  // console.log(userData);
-
   if (isLoading) {
     return <Spinner />;
   }

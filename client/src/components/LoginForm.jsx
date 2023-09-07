@@ -62,8 +62,6 @@ const LoginForm = () => {
       console.log(formErr);
     } else {
       const formData = { email, password };
-      // formData.append("email", email);
-      // formData.append("password", password);
       const req = {
         formData,
         resolve,

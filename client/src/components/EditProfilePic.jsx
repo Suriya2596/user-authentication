@@ -13,7 +13,6 @@ const EditProfilePic = ({ handlePicEdit }) => {
     if (file) {
       const formData = new FormData();
       formData.append("file", file);
-      // console.log(formData.getAll("file")); // Check if the file is added to formData
       dispatch(userProfilePic(formData))
     }
     resolve()
