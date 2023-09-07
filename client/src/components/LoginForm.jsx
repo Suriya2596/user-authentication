@@ -11,6 +11,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogin } from "../features/User/UserAction";
+import { BsFillLockFill, BsFillUnlockFill } from "react-icons/bs";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -37,7 +38,7 @@ const LoginForm = () => {
     if (email.trim().length === 0 || !verifyEmail(email)) {
       formErr.email = "Email address is required";
     }
-    if (password.trim().length < 8 || password.trim().length > 128) {
+    if (password.toString().trim().length < 8 || password.toString().trim().length > 128) {
       formErr.password = "Password is required between 8 to 128 character";
     }
   };
@@ -125,7 +126,15 @@ const LoginForm = () => {
                           id="basic-addon2"
                           onClick={() => settShowPassword(!showPassword)}
                         >
-                          *
+                          {showPassword ? (
+                          <div>
+                            <BsFillUnlockFill />
+                          </div>
+                        ) : (
+                          <div>
+                            <BsFillLockFill />
+                          </div>
+                        )}
                         </InputGroup.Text>
                       </InputGroup>
                       {Object.keys(formError).length > 0 &&

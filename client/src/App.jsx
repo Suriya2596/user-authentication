@@ -16,6 +16,7 @@ import { LogedInRouter, PrivateRouter } from "./routes/PrivateRouter";
 import {useDispatch} from "react-redux"
 import React from "react";
 import { userAccount } from "./features/User/UserAction";
+import ResetPassword from "./components/ResetPassword";
 function App() {
   const dispatch = useDispatch()
 
@@ -29,6 +30,7 @@ function App() {
       <Route>
         <Route path="/" element={<PrivateRouter />}>
           <Route path="/" index element={<Dashboard />} />
+          <Route path="/resetPassword" element={<ResetPassword />} />
         </Route>
         <Route element={<LogedInRouter />}>
           <Route path="/login" element={<LoginForm />} />

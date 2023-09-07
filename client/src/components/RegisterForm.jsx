@@ -57,7 +57,7 @@ const RegisterForm = () => {
     if (mobile.toString().trim().length !== 10 || !verifyNumber(mobile)) {
       formErr.mobile = "Mobile Number is required 10 character";
     }
-    if (password.trim().length < 8 || password.trim().length > 128) {
+    if (password.toString().trim().length < 8 || password.toString().trim().length > 128) {
       formErr.password = "Password is required between 8 to 128 character";
     }
   };

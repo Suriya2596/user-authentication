@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { userAccount, userLogin, userProfilePic, userRegister } from "./UserAction";
+import { userAccount, userLogin, userProfilePic, userRegister, userResetPassword } from "./UserAction";
 
 const initialState = {
   userData: {},
@@ -100,7 +100,31 @@ const UserSlice = createSlice({
       state.isError = true
       state.isSuccess = false
     });
+    // resetPassword userResetPassword
+    builder.addCase(userResetPassword.pending, (state) => {
+      state.isLoading = true
+      state.message = null
+      state.isError = false
+      state.isSuccess = false
+    });
+    builder.addCase(userResetPassword.fulfilled, (state, action) => {
+      state.isLoading = false
+      state.isSuccess = true
+      state.userData = action.payload
+      state.message = null
+      state.isError = false
+    });
+    builder.addCase(userResetPassword.rejected, (state, action) => {
+      state.isLoading = false
+      state.message = action.payload
+      state.isError = true
+      state.isSuccess = false
+    });
   },
 });
 
+// Export the reducer
+export const { userRest } = UserSlice.actions;
+
+// Export the extra reducer
 export default UserSlice.reducer;
