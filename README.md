@@ -47,3 +47,5 @@ We use the Axios library to make API calls to the backend server.
 Packages used in the frontend: React, React Redux, React Router DOM, Axios, Bootstrap.
 
 This README provides a simplified explanation of the user authentication flow in both the backend server and frontend client, along with the key packages used in each part of the application.
+
+https://github.com/Suriya2596/user-authentication/assets/94885532/c3ad5ad3-8800-4ce2-aedc-c0ff946e9f60
