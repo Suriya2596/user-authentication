@@ -10,8 +10,9 @@ import {
 } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { userLogin } from "../features/User/UserAction";
+import { userLogin, userLogout } from "../features/User/UserAction";
 import { BsFillLockFill, BsFillUnlockFill } from "react-icons/bs";
+import { userRest } from "../features/User/UserSlice";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -152,7 +153,10 @@ const LoginForm = () => {
               </Form>
               <p className="my-3">
                 Not been registed
-                <Link to="/register"> Register Now</Link>
+                <Link to="/register" onClick={()=>{
+                  dispatch(userLogout());
+                  dispatch(userRest());
+                }}> Register Now</Link>
               </p>
             </Card>
           </Col>

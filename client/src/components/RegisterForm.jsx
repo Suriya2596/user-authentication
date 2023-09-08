@@ -11,13 +11,14 @@ import {
 } from "react-bootstrap";
 // import ToastMessage from "../uitles/ToastMessage";
 import { useDispatch, useSelector } from "react-redux";
-import { userRegister } from "../features/User/UserAction";
+import { userLogout, userRegister } from "../features/User/UserAction";
 import { Link, useNavigate } from "react-router-dom";
 
 import { BsFillLockFill, BsFillUnlockFill } from "react-icons/bs";
+import { userRest } from "../features/User/UserSlice";
 
 const RegisterForm = () => {
-  const dipatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { isError, isLoading, message } = useSelector((state) => state.User);
@@ -90,7 +91,7 @@ const RegisterForm = () => {
         formData,
         resolve,
       };
-      dipatch(userRegister(req));
+      dispatch(userRegister(req));
     }
   };
 
@@ -206,7 +207,10 @@ const RegisterForm = () => {
             </Form>
             <p className="my-3">
               Alread have registed
-              <Link to="/login"> Login</Link>
+              <Link to="/login" onClick={()=>{
+                  dispatch(userLogout());
+                  dispatch(userRest());
+                }}> Login</Link>
             </p>
           </Card>
         </Col>
