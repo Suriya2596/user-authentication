@@ -19,7 +19,7 @@ Packages used in the backend: Express, Mongoose, CORS, Bcrypt, dotenv, JSON Web 
 In the frontend client, I handle user authentication and API calls using React, React Router, Redux, and Axios. Here's how it works:
 
 1. Certain routes like dashboard, edit-user, and reset-password are protected and only accessible once a user logs in and a valid token is stored locally.
-2.Utilize Redux to manage API calls and store the response objects from the server.
+2. Utilize Redux to manage API calls and store the response objects from the server.
 3. In Redux, handle bad requests or errors using the rejectWithValue function within createAsyncThunk.
 4. Use the Axios library to make API calls to the backend server.
 
