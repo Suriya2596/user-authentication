@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { userAccount, userLogin, userLogout, userProfilePic, userRegister, userResetPassword, userUpdate } from "./UserAction";
+import { userAccount, userLogin, userLogout, userProfileImage, userRegister, userResetPassword, userUpdate } from "./UserAction";
 
 const initialState = {
   userData: {},
   message: null,
+  image:{},
   isError: false,
   isLoading: false,
   isSuccess: false,
@@ -15,6 +16,7 @@ const UserSlice = createSlice({
   reducers: {
     userRest: (state) => {
       state.userData = {};
+      state.image={};
       state.message = null;
       state.isError = false;
       state.isLoading = false;
@@ -100,26 +102,6 @@ const UserSlice = createSlice({
       state.isError = true
       state.isSuccess = false
     });
-    // pic update
-    builder.addCase(userProfilePic.pending, (state) => {
-      state.isLoading = true
-      state.message = null
-      state.isError = false
-      state.isSuccess = false
-    });
-    builder.addCase(userProfilePic.fulfilled, (state, action) => {
-      state.isLoading = false
-      state.isSuccess = true
-      state.userData = action.payload
-      state.message = null
-      state.isError = false
-    });
-    builder.addCase(userProfilePic.rejected, (state, action) => {
-      state.isLoading = false
-      state.message = action.payload
-      state.isError = true
-      state.isSuccess = false
-    });
     // resetPassword userResetPassword
     builder.addCase(userResetPassword.pending, (state) => {
       state.isLoading = true
@@ -135,6 +117,26 @@ const UserSlice = createSlice({
       state.isError = false
     });
     builder.addCase(userResetPassword.rejected, (state, action) => {
+      state.isLoading = false
+      state.message = action.payload
+      state.isError = true
+      state.isSuccess = false
+    });
+     // userProfileImage
+     builder.addCase(userProfileImage.pending, (state) => {
+      state.isLoading = true
+      state.message = null
+      state.isError = false
+      state.isSuccess = false
+    });
+    builder.addCase(userProfileImage.fulfilled, (state, action) => {
+      state.isLoading = false
+      state.isSuccess = true
+      state.image = action.payload
+      state.message = null
+      state.isError = false
+    });
+    builder.addCase(userProfileImage.rejected, (state, action) => {
       state.isLoading = false
       state.message = action.payload
       state.isError = true

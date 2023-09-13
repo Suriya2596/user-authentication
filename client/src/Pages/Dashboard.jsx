@@ -13,6 +13,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { userAccount, userLogout } from "../features/User/UserAction";
 import EditProfilePic from "../components/EditProfilePic";
 import { userRest } from "../features/User/UserSlice";
+import ImageViewer from "../components/ImageViewer";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -55,10 +56,7 @@ const Dashboard = () => {
           </Col>
           <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
             <Card>
-              <img
-                src={`http://localhost:3450${userData.file}`}
-                alt="Profile Picture"
-              />
+             <ImageViewer />
               {picEdit ? (
                 <EditProfilePic handlePicEdit={handlePicEdit} />
               ) : (

@@ -1,32 +1,62 @@
 const express = require("express");
 const routes = express.Router();
 
-const multer = require("multer");
-const path = require("path");
+// Configure multer to handle file uploads
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 const userController = require("../app/controllers/userController");
 const { authentication } = require("../app/middleware/Authentication");
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public/images");
-  },
-  filename: function (req, file, cb) {
-    cb(
-      null,
-      file.fieldname + "_" + Date.now() + path.extname(file.originalname)
-    );
-  },
-});
+const imageController = require("../app/controllers/ImageController");
+const Image = require("../app/models/ImageModel");
 
-const upload = multer({
-  storage: storage,
-});
 
-routes.post("/api/user/register", upload.single("file"), userController.register);
+routes.post("/api/user/register", userController.register);
 routes.post("/api/user/login", userController.login);
-routes.post("/api/user/profilePic", authentication, upload.single("file"), userController.profilePic);
 routes.get("/api/user", authentication, userController.account);
 routes.put("/api/user/update", authentication, userController.update);
 routes.post("/api/user/resetPassword", authentication, userController.resetPassword);
+
+// routes.post("/api/user/profilePic", authentication, upload.single("file"), imageController.create);
+// routes.get("/api/user/profilePic", authentication, imageController.create);
+
+
+
+// POST route for image upload
+routes.post('/api/images/upload', authentication, upload.single('image'), async (req, res) => {
+  try {
+    const { title } = req.body;
+    const { originalname, buffer } = req.file;
+
+    const newImage = new Image({
+      title,
+      User: req.user._id,
+      imageUrl: `data:image/${originalname.split('.').pop()};base64,${buffer.toString('base64')}`,
+    });
+
+    await newImage.save();
+    res.status(201).json({ message: 'Image uploaded successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// GET route to retrieve an image by its ID
+routes.get('/api/images/profilePic', authentication, async (req, res) => {
+  try {
+    const image = await Image.findOne({ User: req.user._id });
+    if (!image) {
+      return res.status(404).json({ message: 'Image not found' });
+    }
+    // Return the image URL
+    res.json({ imageUrl: image.imageUrl });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 module.exports = routes;

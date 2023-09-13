@@ -53,26 +53,6 @@ export const userAccount = createAsyncThunk("user/account", async (_, thunkApi) 
     }
 })
 
-export const userProfilePic = createAsyncThunk("user/pic", async (formData, thunkApi) => {
-    try {
-        const response = await axios.post("http://localhost:3450/api/user/profilePic", formData, {
-            headers: {
-                "Authorization": localStorage.getItem("token")
-            }
-        })
-        if (response.data && response.data._id) {
-            return response.data
-        }
-        const message = "Something went wrong! try again"
-        return thunkApi.rejectWithValue(message)
-    } catch (error) {
-        if(error.response && error.response.data && error.response.data.message && error.response.data.message==="Invalidate Token"){
-            localStorage.removeItem("token")
-        }
-        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
-        return thunkApi.rejectWithValue(message)
-    }
-})
 
 export const userUpdate = createAsyncThunk("user/update",async(req,thunkApi)=>{
     try {
@@ -106,6 +86,30 @@ export const userResetPassword = createAsyncThunk("user/resetPassword",async (re
             req.resolve()
             window.alert("Success full reset your password! Please login again")
             return {}
+        }
+        const message = "Something went wrong! try again"
+        return thunkApi.rejectWithValue(message)
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+        if(message==="Invalidate Token"){
+            localStorage.removeItem("token")
+        }
+        return thunkApi.rejectWithValue(message)
+    }
+})
+
+export const userProfileImage = createAsyncThunk("user/ProfileImage",async (req,thunkApi)=>{
+    console.log(req)
+    try {
+        const response = await axios.post("http://127.0.0.1:3450/api/images/upload",req.formData,{
+            headers: {
+                "Authorization": localStorage.getItem("token"),
+                "Content-Type": "multipart/form-data",
+            }
+        })
+        if(response.data && response.data._id){
+            // req.formData.resolve()
+            return response.data
         }
         const message = "Something went wrong! try again"
         return thunkApi.rejectWithValue(message)
