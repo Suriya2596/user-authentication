@@ -2,10 +2,10 @@
 const mongoose = require('mongoose');
 
 const imageSchema = new mongoose.Schema({
-    title: String,
     User: {
         type:mongoose.Schema.Types.ObjectId,
-        ref:"User"
+        ref:"User",
+        unique:true
     },
     imageUrl: {
         type: String,

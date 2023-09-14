@@ -3,7 +3,7 @@ const mongodbURL = "mongodb+srv://suriyajagan25:suriyajagan25@cluster0.4zpxad6.m
 
 // "mongodb://127.0.0.1:27017/user-authentication"
 const configureDB = ()=>{
-    mongoose.connect("mongodb://127.0.0.1:27017/user-authentication")
+    mongoose.connect(mongodbURL)
     .then(()=>{
         console.log("connect to database")
     })

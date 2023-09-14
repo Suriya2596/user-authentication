@@ -3,17 +3,28 @@ const imageController = {};
 
 imageController.create = async (req, res) => {
     try {
-        const { title } = req.body;
         const { originalname, buffer } = req.file;
-
         const newImage = new Image({
-            title,
             User:req.user._id,
             imageUrl: `data:image/${originalname.split('.').pop()};base64,${buffer.toString('base64')}`,
         });
-
         await newImage.save();
         res.status(201).json({ message: 'Image uploaded successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+}
+
+imageController.update = async (req, res) => {
+    try {
+        const { originalname, buffer } = req.file;
+        const newImage = new Image({
+            User:req.user._id,
+            imageUrl: `data:image/${originalname.split('.').pop()};base64,${buffer.toString('base64')}`,
+        });
+        await Image.findOne({User:req.user._id},newImage,{new:true})
+        res.status(201).json({ message: 'Image uploaded' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error' });
@@ -33,5 +44,6 @@ imageController.show = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 }
+
 
 module.exports = imageController

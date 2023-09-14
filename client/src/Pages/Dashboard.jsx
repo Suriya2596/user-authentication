@@ -11,14 +11,15 @@ import {
 } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { userAccount, userLogout } from "../features/User/UserAction";
-import EditProfilePic from "../components/EditProfilePic";
+import UpdateProfilePic from "../components/UpdateProfilePic";
 import { userRest } from "../features/User/UserSlice";
-import ImageViewer from "../components/ImageViewer";
+import axios from "axios";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [picEdit, setPicEdit] = React.useState(false);
+  const [picUpdate, setPicUpdate] = React.useState(false);
+  const [imageUrl, setImageUrl] = React.useState("");
 
   React.useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -26,11 +27,32 @@ const Dashboard = () => {
     }
   }, [dispatch]);
 
+  React.useEffect(() => {
+    const fetchImage = async () => {
+      try {
+        const response = await axios.get(
+          `http://127.0.0.1:3450/api/images/profilePic`,
+          {
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+          }
+        );
+        console.log(response.data);
+        setImageUrl(response.data.imageUrl);
+      } catch (error) {
+        console.error("Error fetching image:", error);
+      }
+    };
+
+    fetchImage();
+  }, []);
+
   const { isError, isLoading, message, userData } = useSelector(
     (state) => state.User
   );
 
-  const handlePicEdit = () => setPicEdit(!picEdit);
+  const handlePicUpdate = () => setPicUpdate(!picUpdate);
 
   if (isLoading) {
     return <Spinner />;
@@ -56,12 +78,26 @@ const Dashboard = () => {
           </Col>
           <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
             <Card>
-             <ImageViewer />
-              {picEdit ? (
-                <EditProfilePic handlePicEdit={handlePicEdit} />
-              ) : (
-                <Button onClick={handlePicEdit}>Edit Profile Picture</Button>
-              )}
+              <div className="mb-4">
+                {imageUrl ? (
+                  <img
+                    src={imageUrl}
+                    alt="Uploaded"
+                    width={"160px"}
+                    height={"auto"}
+                  />
+                ) : (
+                  <div>
+                    <Button onClick={handlePicUpdate}>
+                      Upload Profile Picture
+                    </Button>
+                  </div>
+                )}
+                {
+                  picUpdate && <UpdateProfilePic handlePicUpdate={handlePicUpdate} />
+                }
+              </div>
+            
               <Card.Body>
                 <Card.Title>{userData.name}</Card.Title>
               </Card.Body>

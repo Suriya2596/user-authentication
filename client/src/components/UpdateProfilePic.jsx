@@ -4,16 +4,14 @@ import PropTypes from "prop-types";
 import axios from "axios";
 // import { useDispatch } from "react-redux";
 
-const EditProfilePic = ({ handlePicEdit }) => {
+const UpdateProfilePic = ({ handlePicUpdate }) => {
   const [image, setImage] = React.useState(null);
-  const [title, setTitle] = React.useState("");
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     if (image) {
       const formData = new FormData();
       formData.append("image", image);
-      formData.append("title", title);
       try {
         await axios.post("http://127.0.0.1:3450/api/images/upload", formData, {
           headers: {
@@ -32,7 +30,7 @@ const EditProfilePic = ({ handlePicEdit }) => {
   };
 
   const resolve = () => {
-    handlePicEdit();
+    handlePicUpdate();
     setImage(null);
   };
 
@@ -47,12 +45,6 @@ const EditProfilePic = ({ handlePicEdit }) => {
         <Form.Group controlId="image" className="mb-2 text-start">
           <Form.Label>Profile Picture</Form.Label>
           <Form.Control
-            type="text"
-            placeholder="Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <Form.Control
             type="file"
             accept="image/*"
             onChange={(e) => setImage(e.target.files[0])}
@@ -64,8 +56,8 @@ const EditProfilePic = ({ handlePicEdit }) => {
   );
 };
 
-EditProfilePic.propTypes = {
-  handlePicEdit: PropTypes.func,
+UpdateProfilePic.propTypes = {
+  handlePicUpdate: PropTypes.func,
 };
 
-export default EditProfilePic;
+export default UpdateProfilePic;
