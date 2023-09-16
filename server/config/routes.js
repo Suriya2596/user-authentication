@@ -25,7 +25,7 @@ routes.post("/api/user/resetPassword", authentication, userController.resetPassw
 
 
 // POST route for image upload
-routes.post('/api/images/upload', authentication, upload.single('image'), async (req, res) => {
+routes.post('/api/profilePic', authentication, upload.single('image'), async (req, res) => {
   try {
     const { title } = req.body;
     const { originalname, buffer } = req.file;
@@ -36,8 +36,8 @@ routes.post('/api/images/upload', authentication, upload.single('image'), async 
       imageUrl: `data:image/${originalname.split('.').pop()};base64,${buffer.toString('base64')}`,
     });
 
-    await newImage.save();
-    res.status(201).json({ message: 'Image uploaded successfully' });
+    const result = await newImage.save();
+    res.status(200).json(result);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error' });
@@ -45,14 +45,14 @@ routes.post('/api/images/upload', authentication, upload.single('image'), async 
 });
 
 // GET route to retrieve an image by its ID
-routes.get('/api/images/profilePic', authentication, async (req, res) => {
+routes.get('/api/profilePic', authentication, async (req, res) => {
   try {
     const image = await Image.findOne({ User: req.user._id });
     if (!image) {
       return res.status(404).json({ message: 'Image not found' });
     }
     // Return the image URL
-    res.json({ imageUrl: image.imageUrl });
+    res.json(image);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error' });

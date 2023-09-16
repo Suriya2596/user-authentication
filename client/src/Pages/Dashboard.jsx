@@ -13,44 +13,29 @@ import { Link, useNavigate } from "react-router-dom";
 import { userAccount, userLogout } from "../features/User/UserAction";
 import UpdateProfilePic from "../components/UpdateProfilePic";
 import { userRest } from "../features/User/UserSlice";
-import axios from "axios";
+import { imageShow } from "../features/Image/ImageAction";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [picUpdate, setPicUpdate] = React.useState(false);
-  const [imageUrl, setImageUrl] = React.useState("");
 
   React.useEffect(() => {
     if (localStorage.getItem("token")) {
       dispatch(userAccount());
+      dispatch(imageShow());
     }
   }, [dispatch]);
 
-  React.useEffect(() => {
-    const fetchImage = async () => {
-      try {
-        const response = await axios.get(
-          `http://127.0.0.1:3450/api/images/profilePic`,
-          {
-            headers: {
-              Authorization: localStorage.getItem("token"),
-            },
-          }
-        );
-        console.log(response.data);
-        setImageUrl(response.data.imageUrl);
-      } catch (error) {
-        console.error("Error fetching image:", error);
-      }
-    };
-
-    fetchImage();
-  }, []);
+  React.useEffect(() => {}, []);
 
   const { isError, isLoading, message, userData } = useSelector(
     (state) => state.User
   );
+
+  const { dataImage } = useSelector((state) => state.image);
+
+  // console.log(dataImage);
 
   const handlePicUpdate = () => setPicUpdate(!picUpdate);
 
@@ -79,25 +64,28 @@ const Dashboard = () => {
           <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
             <Card>
               <div className="mb-4">
-                {imageUrl ? (
-                  <img
-                    src={imageUrl}
-                    alt="Uploaded"
-                    width={"160px"}
-                    height={"auto"}
-                  />
-                ) : (
-                  <div>
-                    <Button onClick={handlePicUpdate}>
-                      Upload Profile Picture
-                    </Button>
-                  </div>
+                {dataImage && Object.keys(dataImage).length > 0 && (
+                  <>
+                    <img
+                      src={dataImage.imageUrl}
+                      alt="Uploaded"
+                      width={"160px"}
+                      height={"auto"}
+                    />
+                  </>
                 )}
-                {
-                  picUpdate && <UpdateProfilePic handlePicUpdate={handlePicUpdate} />
-                }
+                {(dataImage && Object.keys(dataImage).length === 0 )&&
+                  (picUpdate ? (
+                    <UpdateProfilePic handlePicUpdate={handlePicUpdate} />
+                  ) : (
+                    <div>
+                      <Button onClick={handlePicUpdate}>
+                        Upload Profile Picture
+                      </Button>
+                    </div>
+                  ))}
               </div>
-            
+
               <Card.Body>
                 <Card.Title>{userData.name}</Card.Title>
               </Card.Body>

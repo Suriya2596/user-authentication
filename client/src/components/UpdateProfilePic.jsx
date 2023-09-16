@@ -1,31 +1,21 @@
 import React from "react";
 import { Button, Form } from "react-bootstrap";
 import PropTypes from "prop-types";
-import axios from "axios";
+import { useDispatch } from "react-redux";
+import { imageCreate } from "../features/Image/ImageAction";
 // import { useDispatch } from "react-redux";
 
 const UpdateProfilePic = ({ handlePicUpdate }) => {
+  const dispatcch = useDispatch()
   const [image, setImage] = React.useState(null);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     if (image) {
-      const formData = new FormData();
-      formData.append("image", image);
-      try {
-        await axios.post("http://127.0.0.1:3450/api/images/upload", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization:localStorage.getItem("token")
-          },
-        });
-        // Handle success, e.g., show a success message or redirect to another page
-        resolve();
-        alert("Image uploaded successfully");
-      } catch (error) {
-        // Handle error, e.g., show an error message to the user
-        console.error("Error uploading image:", error);
+      const req = {
+        image,resolve
       }
+      dispatcch(imageCreate(req))
     }
   };
 
