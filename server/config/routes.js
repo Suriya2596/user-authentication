@@ -9,7 +9,7 @@ const upload = multer({ storage: storage });
 const userController = require("../app/controllers/userController");
 const { authentication } = require("../app/middleware/Authentication");
 
-const imageController = require("../app/controllers/ImageController");
+// const imageController = require("../app/controllers/ImageController");
 const Image = require("../app/models/ImageModel");
 
 
@@ -25,7 +25,7 @@ routes.post("/api/user/resetPassword", authentication, userController.resetPassw
 routes.post('/api/profilePic', authentication, upload.single('image'), async (req, res) => {
   try {
     const { originalname, buffer } = req.file;
-
+    // console.log(req.file)
     const newImage = new Image({
       User: req.user._id,
       imageUrl: `data:image/${originalname.split('.').pop()};base64,${buffer.toString('base64')}`,

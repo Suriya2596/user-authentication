@@ -8,9 +8,16 @@ import { imageCreate } from "../features/Image/ImageAction";
 const UpdateProfilePic = ({ handlePicUpdate }) => {
   const dispatcch = useDispatch()
   const [image, setImage] = React.useState(null);
+  const [formError,setFormError] = React.useState({})
 
+  const handleFormError = ()=>{
+    if(!image){
+      setFormError({image:"Plesae select the image"})
+    }
+  }
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    handleFormError()
     if (image) {
       const req = {
         image,resolve
@@ -37,9 +44,18 @@ const UpdateProfilePic = ({ handlePicUpdate }) => {
           <Form.Control
             type="file"
             accept="image/*"
-            onChange={(e) => setImage(e.target.files[0])}
+            onChange={(e) => {
+              setImage(e.target.files[0])
+              setFormError({})
+            }}
           />
-          <Button type="submit" variant="success">Save</Button>
+          {
+            formError && Object.keys(formError).length>0 && formError.image && <p className="my-2" style={{color:"red"}}>{formError.image}</p>
+          }
+          <div className="d-flex my-2">
+            <Button type="submit" variant="success">Save</Button>
+            <Button onClick={handlePicUpdate} className="mx-2" variant="secondary">Cancle</Button>
+          </div>
         </Form.Group>
       </div>
     </form>

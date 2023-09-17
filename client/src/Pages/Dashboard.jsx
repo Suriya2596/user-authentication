@@ -85,12 +85,16 @@ const Dashboard = () => {
                 </Col>
                 <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
                   <div className="mb-2">
-                    {editImage ? (
-                      <EditProfilePic handleEditImage={handleEditImage} />
-                    ) : (
-                      <Button onClick={handleEditImage}>
-                        Edit Profile Picture
-                      </Button>
+                    {dataImage && Object.keys(dataImage).length > 0 && (
+                      <>
+                        {editImage ? (
+                          <EditProfilePic handleEditImage={handleEditImage} />
+                        ) : (
+                          <Button onClick={handleEditImage}>
+                            Edit Profile Picture
+                          </Button>
+                        )}
+                      </>
                     )}
                   </div>
                 </Col>
