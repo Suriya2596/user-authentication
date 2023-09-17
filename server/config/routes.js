@@ -19,19 +19,14 @@ routes.get("/api/user", authentication, userController.account);
 routes.put("/api/user/update", authentication, userController.update);
 routes.post("/api/user/resetPassword", authentication, userController.resetPassword);
 
-// routes.post("/api/user/profilePic", authentication, upload.single("file"), imageController.create);
-// routes.get("/api/user/profilePic", authentication, imageController.create);
-
 
 
 // POST route for image upload
 routes.post('/api/profilePic', authentication, upload.single('image'), async (req, res) => {
   try {
-    const { title } = req.body;
     const { originalname, buffer } = req.file;
 
     const newImage = new Image({
-      title,
       User: req.user._id,
       imageUrl: `data:image/${originalname.split('.').pop()};base64,${buffer.toString('base64')}`,
     });
@@ -57,6 +52,30 @@ routes.get('/api/profilePic', authentication, async (req, res) => {
     console.error(error);
     res.status(500).json({ message: 'Server error' });
   }
+});
+
+routes.put('/api/profilePic', authentication, upload.single('image'), (req, res) => {
+  const { originalname, buffer } = req.file;
+  const newImage = {
+    imageUrl: `data:image/${originalname.split('.').pop()};base64,${buffer.toString('base64')}`,
+  }
+  Image.findOneAndUpdate({ User: req.user._id }, newImage, { runValidators: true, new: true })
+    .then((image) => {
+      res.json(image)
+    })
+    .catch((err) => {
+      res.json(err)
+    })
+});
+
+routes.delete('/api/profilePic', authentication, (req, res) => {
+  Image.findOneAndDelete({ User: req.user._id })
+    .then((image) => {
+      res.json(image)
+    })
+    .catch((err) => {
+      res.json(err)
+    })
 });
 
 module.exports = routes;

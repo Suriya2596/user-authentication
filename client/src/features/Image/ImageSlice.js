@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit"
-import { imageCreate, imageShow } from "./ImageAction"
+import { imageCreate, imageShow, imageUpdate } from "./ImageAction"
 
 const ImageSlice = createSlice({
     name:"Image",
@@ -37,6 +37,21 @@ const ImageSlice = createSlice({
             state.dataImage = action.payload
         })
         .addCase(imageShow.rejected,(state,action)=>{
+            state.isLoadingImage = false
+            state.errorIamge = false
+            state.messageImage = action.payload
+        })
+        // update
+        .addCase(imageUpdate.pending,(state)=>{
+            state.isLoadingImage = true
+        })
+        .addCase(imageUpdate.fulfilled,(state,action)=>{
+            state.isLoadingImage = false
+            state.errorIamge = false
+            state.messageImage = null
+            state.dataImage = action.payload
+        })
+        .addCase(imageUpdate.rejected,(state,action)=>{
             state.isLoadingImage = false
             state.errorIamge = false
             state.messageImage = action.payload

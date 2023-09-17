@@ -14,11 +14,13 @@ import { userAccount, userLogout } from "../features/User/UserAction";
 import UpdateProfilePic from "../components/UpdateProfilePic";
 import { userRest } from "../features/User/UserSlice";
 import { imageShow } from "../features/Image/ImageAction";
+import EditProfilePic from "../components/EditProfilePic";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [picUpdate, setPicUpdate] = React.useState(false);
+  const [editImage, setEditImage] = React.useState(false);
 
   React.useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -38,6 +40,8 @@ const Dashboard = () => {
   // console.log(dataImage);
 
   const handlePicUpdate = () => setPicUpdate(!picUpdate);
+
+  const handleEditImage = () => setEditImage(!editImage);
 
   if (isLoading) {
     return <Spinner />;
@@ -63,29 +67,49 @@ const Dashboard = () => {
           </Col>
           <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
             <Card>
-              <div className="mb-4">
-                {dataImage && Object.keys(dataImage).length > 0 && (
-                  <>
-                    <img
-                      src={dataImage.imageUrl}
-                      alt="Uploaded"
-                      width={"160px"}
-                      height={"auto"}
-                    />
-                  </>
-                )}
-                {(dataImage && Object.keys(dataImage).length === 0 )&&
-                  (picUpdate ? (
-                    <UpdateProfilePic handlePicUpdate={handlePicUpdate} />
-                  ) : (
-                    <div>
-                      <Button onClick={handlePicUpdate}>
-                        Upload Profile Picture
+              <Row>
+                <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
+                  {dataImage && Object.keys(dataImage).length > 0 && (
+                    <>
+                      {!editImage && (
+                        <img
+                          src={dataImage.imageUrl}
+                          alt="Uploaded"
+                          width={"160px"}
+                          height={"auto"}
+                          className="mb-2"
+                        />
+                      )}
+                    </>
+                  )}
+                </Col>
+                <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
+                  <div className="mb-2">
+                    {editImage ? (
+                      <EditProfilePic handleEditImage={handleEditImage} />
+                    ) : (
+                      <Button onClick={handleEditImage}>
+                        Edit Profile Picture
                       </Button>
-                    </div>
-                  ))}
-              </div>
-
+                    )}
+                  </div>
+                </Col>
+                <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
+                  <div className="mb-1">
+                    {dataImage &&
+                      Object.keys(dataImage).length === 0 &&
+                      (picUpdate ? (
+                        <UpdateProfilePic handlePicUpdate={handlePicUpdate} />
+                      ) : (
+                        <div>
+                          <Button onClick={handlePicUpdate}>
+                            Upload Profile Picture
+                          </Button>
+                        </div>
+                      ))}
+                  </div>
+                </Col>
+              </Row>
               <Card.Body>
                 <Card.Title>{userData.name}</Card.Title>
               </Card.Body>

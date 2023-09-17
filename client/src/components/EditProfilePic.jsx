@@ -2,25 +2,26 @@ import React from "react";
 import { Button, Form } from "react-bootstrap";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
-import { imageCreate } from "../features/Image/ImageAction";
+import { imageUpdate } from "../features/Image/ImageAction";
 // import { useDispatch } from "react-redux";
 
-const UpdateProfilePic = ({ handlePicUpdate }) => {
-  const dispatcch = useDispatch()
+const EditProfilePic = ({ handleEditImage }) => {
+  const dispatcch = useDispatch();
   const [image, setImage] = React.useState(null);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     if (image) {
       const req = {
-        image,resolve
-      }
-      dispatcch(imageCreate(req))
+        image,
+        resolve,
+      };
+      dispatcch(imageUpdate(req));
     }
   };
 
   const resolve = () => {
-    handlePicUpdate();
+    handleEditImage();
     setImage(null);
   };
 
@@ -28,7 +29,7 @@ const UpdateProfilePic = ({ handlePicUpdate }) => {
     <form
       onSubmit={handleFormSubmit}
       action="/api/user/profilePic"
-      method="post"
+      method="put"
       encType="multipart/form-data"
     >
       <div>
@@ -39,15 +40,18 @@ const UpdateProfilePic = ({ handlePicUpdate }) => {
             accept="image/*"
             onChange={(e) => setImage(e.target.files[0])}
           />
-          <Button type="submit" variant="success">Save</Button>
+          <div className="d-flex my-2">
+            <Button type="submit" variant="success">Save</Button>
+            <Button onClick={handleEditImage} className="mx-2" variant="secondary">Cancle</Button>
+          </div>
         </Form.Group>
       </div>
     </form>
   );
 };
 
-UpdateProfilePic.propTypes = {
-  handlePicUpdate: PropTypes.func,
+EditProfilePic.propTypes = {
+  handleEditImage: PropTypes.func,
 };
 
-export default UpdateProfilePic;
+export default EditProfilePic;
