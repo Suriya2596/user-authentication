@@ -1,6 +1,8 @@
 import { Outlet, Navigate } from "react-router-dom";
+import cookie from "js-cookie"
+
 export const PrivateRouter = () => {
-  return localStorage.getItem("token") ? (
+  return cookie.get("token") ? (
     <Outlet />
   ) : (
     <Navigate to={"/login"} />
@@ -8,5 +10,5 @@ export const PrivateRouter = () => {
 };
 
 export const LogedInRouter = () => {
-  return localStorage.getItem("token") ? <Navigate to={"/"} /> : <Outlet />;
+  return cookie.get("token") ? <Navigate to={"/"} /> : <Outlet />;
 };

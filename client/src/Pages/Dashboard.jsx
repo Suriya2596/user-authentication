@@ -15,7 +15,7 @@ import UpdateProfilePic from "../components/UpdateProfilePic";
 import { userRest } from "../features/User/UserSlice";
 import { imageShow } from "../features/Image/ImageAction";
 import EditProfilePic from "../components/EditProfilePic";
-
+import cookie from "js-cookie";
 const Dashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ const Dashboard = () => {
   const [editImage, setEditImage] = React.useState(false);
 
   React.useEffect(() => {
-    if (localStorage.getItem("token")) {
+    if (cookie.get("token")) {
       dispatch(userAccount());
       dispatch(imageShow());
     }

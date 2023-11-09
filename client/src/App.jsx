@@ -18,11 +18,13 @@ import React from "react";
 import { userAccount } from "./features/User/UserAction";
 import ResetPassword from "./components/ResetPassword";
 import EditUser from "./components/EditUser";
+import cookie from "js-cookie"
+
 function App() {
   const dispatch = useDispatch()
 
   React.useEffect(()=>{
-    if(localStorage.getItem("token")){
+    if(cookie.get("token")){
       dispatch(userAccount())
     }
   },[dispatch])

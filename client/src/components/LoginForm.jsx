@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { userLogin, userLogout } from "../features/User/UserAction";
 import { BsFillLockFill, BsFillUnlockFill } from "react-icons/bs";
 import { userRest } from "../features/User/UserSlice";
-
+import cookie from "js-cookie"
 const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -49,7 +49,7 @@ const LoginForm = () => {
     setPassword("");
     setFormError({});
     settShowPassword(false);
-    if (localStorage.getItem("token")) {
+    if (cookie.get("token")) {
       navigate("/");
     }
   };

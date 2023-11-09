@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from "axios";
-
+import cookie from "js-cookie"
 export const userRegister = createAsyncThunk("user/register", async (req, thunkApi) => {
     try {
         const response = await axios.post("http://localhost:3450/api/user/register", req.formData)
@@ -21,7 +21,7 @@ export const userLogin = createAsyncThunk("user/login", async (req, thunkApi) =>
     try {
         const response = await axios.post("http://localhost:3450/api/user/login", req.formData)
         if (response.data && response.data.token) {
-            localStorage.setItem("token", response.data.token)
+            cookie.set("token",response.data.token,{expires:1})
             return req.resolve()
         }
     } catch (error) {
@@ -34,7 +34,7 @@ export const userAccount = createAsyncThunk("user/account", async (_, thunkApi) 
     try {
         const response = await axios.get("http://localhost:3450/api/user", {
             headers: {
-                "Authorization": localStorage.getItem("token")
+                "Authorization": cookie.get("token")
             }
         })
         if (response.data && response.data._id) {
@@ -46,7 +46,7 @@ export const userAccount = createAsyncThunk("user/account", async (_, thunkApi) 
         }
     } catch (error) {
         if(error.response && error.response.data && error.response.data.message && error.response.data.message==="Invalidate Token"){
-            localStorage.removeItem("token")
+            cookie.remove("token")
         }
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
         return thunkApi.rejectWithValue(message)
@@ -57,7 +57,7 @@ export const userAccount = createAsyncThunk("user/account", async (_, thunkApi) 
 export const userUpdate = createAsyncThunk("user/update",async(req,thunkApi)=>{
     try {
         const response = await axios.put("http://localhost:3450/api/user/update",req.formData,{
-            headers:{Authorization:localStorage.getItem("token")}
+            headers:{Authorization:cookie.get("token")}
         })
         if (response.data && response.data._id) {
             req.resolve()
@@ -68,7 +68,7 @@ export const userUpdate = createAsyncThunk("user/update",async(req,thunkApi)=>{
 
     } catch (error) {
         if(error.response && error.response.data && error.response.data.message && error.response.data.message==="Invalidate Token"){
-            localStorage.removeItem("token")
+            cookie.remove("token")
         }
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
         return thunkApi.rejectWithValue(message)
@@ -79,7 +79,7 @@ export const userResetPassword = createAsyncThunk("user/resetPassword",async (re
     try {
         const response = await axios.post("http://localhost:3450/api/user/resetPassword",req.formData,{
             headers: {
-                "Authorization": localStorage.getItem("token")
+                "Authorization": cookie.get("token")
             }
         })
         if(response.data && response.data._id){
@@ -92,7 +92,7 @@ export const userResetPassword = createAsyncThunk("user/resetPassword",async (re
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
         if(message==="Invalidate Token"){
-            localStorage.removeItem("token")
+            cookie.remove("token")
         }
         return thunkApi.rejectWithValue(message)
     }
@@ -103,7 +103,7 @@ export const userProfileImage = createAsyncThunk("user/ProfileImage",async (req,
     try {
         const response = await axios.post("http://127.0.0.1:3450/api/images/upload",req.formData,{
             headers: {
-                "Authorization": localStorage.getItem("token"),
+                "Authorization": cookie.get("token"),
                 "Content-Type": "multipart/form-data",
             }
         })
@@ -116,15 +116,15 @@ export const userProfileImage = createAsyncThunk("user/ProfileImage",async (req,
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
         if(message==="Invalidate Token"){
-            localStorage.removeItem("token")
+            cookie.remove("token")
         }
         return thunkApi.rejectWithValue(message)
     }
 })
 
 export const userLogout = createAsyncThunk("user/logout",()=>{
-    if(localStorage.getItem("token")){
-        localStorage.removeItem("token")
+    if(cookie.get("token")){
+        cookie.remove("token")
         return {}
     }
 })

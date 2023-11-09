@@ -2,6 +2,8 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from "axios";
 // http://127.0.0.1:3450/api/images/profilePic
 
+import cookie from "js-cookie"
+// cookie.get("token")
 
 export const imageCreate = createAsyncThunk("image/create", async (req, thunkApi) => {
     const formData = new FormData
@@ -10,7 +12,7 @@ export const imageCreate = createAsyncThunk("image/create", async (req, thunkApi
     try {
         const response = await axios.post("http://localhost:3450/api/profilePic", formData,{
             headers: {
-                "Authorization": localStorage.getItem("token")
+                "Authorization": cookie.get("token")
             }
         })
         // console.log(response.data)
@@ -36,7 +38,7 @@ export const imageUpdate = createAsyncThunk("image/update", async (req, thunkApi
     try {
         const response = await axios.put("http://localhost:3450/api/profilePic", formData,{
             headers: {
-                "Authorization": localStorage.getItem("token")
+                "Authorization": cookie.get("token")
             }
         })
         // console.log(response.data)
@@ -58,7 +60,7 @@ export const imageShow = createAsyncThunk("image/show", async (req, thunkApi) =>
     try {
         const response = await axios.get("http://localhost:3450/api/profilePic",{
             headers: {
-                "Authorization": localStorage.getItem("token")
+                "Authorization": cookie.get("token")
             }
         })
         if (response && response.data && response.data._id) {

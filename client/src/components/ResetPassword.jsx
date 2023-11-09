@@ -13,7 +13,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { userLogout, userResetPassword } from "../features/User/UserAction";
 import { BsFillLockFill, BsFillUnlockFill } from "react-icons/bs";
 import { userRest } from "../features/User/UserSlice";
-
+import cookie from "js-cookie"
+// cookie.get("token")
 const ResetPassword = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
@@ -50,7 +51,7 @@ const ResetPassword = () => {
     setConfirmPassword("");
     setFormError({});
     settShowPassword(false);
-    if(localStorage.getItem("token")){
+    if(cookie.get("token")){
         dispatch(userLogout())
         dispatch(userRest())
         navigate("/login")
