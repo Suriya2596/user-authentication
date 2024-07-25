@@ -11,7 +11,6 @@ import {
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 import Page404 from "./routes/Page404";
-import Dashboard from "./Pages/Dashboard";
 import { LogedInRouter, PrivateRouter } from "./routes/PrivateRouter";
 import {useDispatch} from "react-redux"
 import React from "react";
@@ -19,6 +18,7 @@ import { userAccount } from "./features/User/UserAction";
 import ResetPassword from "./components/ResetPassword";
 import EditUser from "./components/EditUser";
 import cookie from "js-cookie"
+import Dashboard from "./components/Dashboard";
 
 function App() {
   const dispatch = useDispatch()

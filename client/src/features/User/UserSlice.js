@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { userAccount, userLogin, userLogout, userProfileImage, userRegister, userResetPassword, userUpdate } from "./UserAction";
 
+
 const initialState = {
   userData: {},
   message: null,
-  image:{},
+  image: {},
   isError: false,
   isLoading: false,
   isSuccess: false,
@@ -12,11 +13,11 @@ const initialState = {
 
 const UserSlice = createSlice({
   name: "User",
-  initialState,
+  initialState : initialState,
   reducers: {
     userRest: (state) => {
       state.userData = {};
-      state.image={};
+      state.image = {};
       state.message = null;
       state.isError = false;
       state.isLoading = false;
@@ -122,8 +123,8 @@ const UserSlice = createSlice({
       state.isError = true
       state.isSuccess = false
     });
-     // userProfileImage
-     builder.addCase(userProfileImage.pending, (state) => {
+    // userProfileImage
+    builder.addCase(userProfileImage.pending, (state) => {
       state.isLoading = true
       state.message = null
       state.isError = false

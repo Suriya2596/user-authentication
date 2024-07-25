@@ -11,10 +11,10 @@ import {
 } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { userAccount, userLogout } from "../features/User/UserAction";
-import UpdateProfilePic from "../components/UpdateProfilePic";
+import UpdateProfilePic from "./UpdateProfilePic";
 import { userRest } from "../features/User/UserSlice";
 import { imageShow } from "../features/Image/ImageAction";
-import EditProfilePic from "../components/EditProfilePic";
+import EditProfilePic from "./EditProfilePic";
 import cookie from "js-cookie";
 const Dashboard = () => {
   const dispatch = useDispatch();

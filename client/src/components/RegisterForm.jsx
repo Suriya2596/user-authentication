@@ -16,6 +16,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { BsFillLockFill, BsFillUnlockFill } from "react-icons/bs";
 import { userRest } from "../features/User/UserSlice";
+import { validateEmail, validateNumber } from "../uitles/validate";
 
 const RegisterForm = () => {
   const dispatch = useDispatch();
@@ -32,30 +33,14 @@ const RegisterForm = () => {
 
   let formErr = {};
 
-  const verifyEmail = (value) => {
-    var emailRex =
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (emailRex.test(value)) {
-      return true;
-    }
-    return false;
-  };
-  const verifyNumber = (value) => {
-    var numberRex = new RegExp("^[0-9]+$");
-    if (numberRex.test(value)) {
-      return true;
-    }
-    return false;
-  };
-
   const handleFormError = () => {
     if (name.trim().length === 0) {
       formErr.name = "Name is required";
     }
-    if (email.trim().length === 0 || !verifyEmail(email)) {
+    if (email.trim().length === 0 || !validateEmail(email)) {
       formErr.email = "Email address is required";
     }
-    if (mobile.toString().trim().length !== 10 || !verifyNumber(mobile)) {
+    if (mobile.toString().trim().length !== 10 || !validateNumber(mobile)) {
       formErr.mobile = "Mobile Number is required 10 character";
     }
     if (password.toString().trim().length < 8 || password.toString().trim().length > 128) {
@@ -94,6 +79,8 @@ const RegisterForm = () => {
       dispatch(userRegister(req));
     }
   };
+
+  console.log(formError)
 
   if (isLoading) {
     return <Spinner animation="border" />;
